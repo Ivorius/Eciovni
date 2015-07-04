@@ -1,10 +1,4 @@
 {
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/VasilKacerov/mpdf.git"
-        }
-    ],
     "name": "ondrejbrejla/eciovni",
     "description": "Component for generating invoices using Nette Framework and mPDF library.",
     "keywords": ["invoice", "generator", "nette", "latte", "mpdf"],
@@ -18,8 +12,8 @@
     ],
     "require": {
         "php": ">=5.3.1",
-        "nette/nette": ">=2.0.0",
-        "mpdf/mpdf": "dev-nikonschool"
+        "nette/nette": "~2",
+        "mpdf/mpdf": "dev-master"
     },
     "autoload": {
         "psr-0": {
