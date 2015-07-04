@@ -44,16 +44,23 @@ class DataBuilder extends Object {
     /** @var DateTime */
     private $dateOfVatRevenueRecognition;
 
+    /** @var string */
+    private $orderNumber;
+
+    /** @var string */
+    private $paymentChannel;
+
     /** @var Item[] */
     private $items = array();
 
-    public function __construct($id, $title, Participant $supplier, Participant $customer, DateTime $expirationDate, DateTime $dateOfIssuance, array $items) {
+    public function __construct($id, $title, Participant $supplier, Participant $customer, DateTime $expirationDate, DateTime $dateOfIssuance, $paymentChannel, array $items) {
         $this->id = $id;
         $this->title = $title;
         $this->supplier = $supplier;
         $this->customer = $customer;
         $this->expirationDate = $expirationDate;
         $this->dateOfIssuance = $dateOfIssuance;
+        $this->paymentChannel = $paymentChannel;
         $this->addItems($items);
     }
 
@@ -120,6 +127,17 @@ class DataBuilder extends Object {
      */
     public function setDateOfVatRevenueRecognition(DateTime $dateOfTaxablePayment) {
         $this->dateOfVatRevenueRecognition = $dateOfTaxablePayment;
+        return $this;
+    }
+
+    /**
+     * Sets the order number.
+     *
+     * @param string $orderNumber
+     * @return DataBuilder
+     */
+    public function setOrderNumber($orderNumber) {
+        $this->orderNumber = $orderNumber;
         return $this;
     }
 
@@ -211,6 +229,24 @@ class DataBuilder extends Object {
      */
     public function getDateOfVatRevenueRecognition() {
         return $this->dateOfVatRevenueRecognition;
+    }
+
+    /**
+     * Returns the order number.
+     *
+     * @return string
+     */
+    public function getOrderNumber() {
+        return $this->orderNumber;
+    }
+
+    /**
+     * Returns the payment channel.
+     *
+     * @return string
+     */
+    public function getPaymentChannel() {
+        return $this->paymentChannel;
     }
 
     /**

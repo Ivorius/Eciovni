@@ -57,14 +57,26 @@
     }
 </style>
 <div>
-    <div style="text-align: right; border-bottom: 2px solid #000000; color: #1A5DAC; font-weight: bold; font-size: 20px;">{$title} - {$id}</div>
+    <table style="width: 100%; border-bottom: 2px solid #000000; padding-bottom: 11px;">
+        <tr>
+            <td n:ifset="$logoImageUrl" style="width: 262px; vertical-align: bottom;">
+                <img src="{$logoImageUrl}" style="margin: 0; padding: 0;" alt="Nikon škola">
+            </td>
+            <td style="text-align: right; color: #1A5DAC; font-weight: bold; font-size: 20px; vertical-align: bottom;">
+                {if !empty($title)}{$title} - {/if}Daňový doklad č.&nbsp;{$id}
+            </td>
+        </tr>
+    </table>
 
     <table>
         <tr>
             <td width="40%">
                 <span style="color: #1A5DAC; font-weight: bold; font-size: 12px;">Dodavatel:</span>
-                <table style="font-weight: bold; margin-bottom: 15px;">
+                <table style="font-weight: bold; margin: 18px 0;">
                     <tr>
+                        <td n:ifset="$supplierImageUrl" rowspan="4" style="padding-right: 18px">
+                            <img src="{$supplierImageUrl}" style="width: 60px;" alt="">
+                        </td>
                         <td>{$supplierName}</td>
                     </tr>
                     <tr>
@@ -72,6 +84,9 @@
                     </tr>
                     <tr>
                         <td>{$supplierCity}, {$supplierZip}</td>
+                    </tr>
+                    <tr>
+                        <td>{$supplierCountry}</td>
                     </tr>
                 </table>
 
@@ -96,7 +111,11 @@
                 <table style="width: 100%;">
                     <tr>
                         <td>Forma úhrady:</td>
-                        <td style="text-align: center;">převodem</td>
+                        <td style="text-align: center;">{$paymentChannel}</td>
+                    </tr>
+                    <tr n:if="$orderNumber">
+                        <td>Číslo objednávky:</td>
+                        <td style="text-align: center;">{$orderNumber}</td>
                     </tr>
                     <tr n:if="$dateOfIssuance">
                         <td>Datum vystavení:</td>
@@ -132,21 +151,6 @@
                     <tr>
                         <td width="350">
                             <span style="color: #1A5DAC; font-weight: bold; font-size: 12px;">Odběratel:</span>
-                            <table style="margin-bottom: 15px;">
-                                <tr n:if="$customerIn">
-                                    <td>IČ:</td>
-                                    <td>{$customerIn == 0 ? '' : $customerIn}</td>
-                                </tr>
-                                <tr n:if="$customerTin">
-                                    <td>DIČ:</td>
-                                    <td>{$customerTin}</td>
-                                </tr>
-                                <tr n:if="$customerAccountNumber">
-                                    <td>Číslo účtu:</td>
-                                    <td>{$customerAccountNumber}</td>
-                                </tr>
-                            </table>
-
                             <table style="font-weight: bold; margin-bottom: 15px;">
                                 <tr n:if="$customerName">
                                     <td>{$customerName}</td>
@@ -155,7 +159,24 @@
                                     <td>{$customerStreet} {$customerHouseNumber}</td>
                                 </tr>
                                 <tr n:if="$customerCity || $customerZip">
-                                    <td>{$customerCity}, {$customerZip}</td>
+                                    <td>{$customerCity}{if $customerCity && $customerZip}, {/if}{$customerZip}</td>
+                                </tr>
+                                <tr n:if="$customerCountry">
+                                    <td>{$customerCountry}</td>
+                                </tr>
+                            </table>
+                            <table style="margin-bottom: 15px;">
+                                <tr n:if="$customerIn">
+                                    <td>IČ:</td>
+                                    <td>{$customerIn}</td>
+                                </tr>
+                                <tr n:if="$customerTin">
+                                    <td>DIČ:</td>
+                                    <td>{$customerTin}</td>
+                                </tr>
+                                <tr n:if="$customerAccountNumber">
+                                    <td>Číslo účtu:</td>
+                                    <td>{$customerAccountNumber}</td>
                                 </tr>
                             </table>
                         </td>
@@ -168,20 +189,20 @@
         <table style="width: 100%;">
             <tr>
                 <td><strong>Položka</strong></td>
-                <td style="text-align: right;"><strong>Cena/jedn.</strong></td>
-                <td style="text-align: right;"><strong>Počet</strong></td>
-                <td style="text-align: right;"><strong>%DPH</strong></td>
-                <td style="text-align: right;"><strong>DPH</strong></td>
-                <td style="text-align: right;"><strong>Cena (Kč)</strong></td>
+                <td style="text-align: right; padding: 0 6px;"><strong>Cena/jedn.</strong></td>
+                <td style="text-align: right; padding: 0 6px;"><strong>Počet</strong></td>
+                <td style="text-align: right; padding: 0 6px;"><strong>%DPH</strong></td>
+                <td style="text-align: right; padding: 0 6px;"><strong>DPH</strong></td>
+                <td style="text-align: right; padding: 0 6px;"><strong>Cena (Kč)</strong></td>
             </tr>
             {foreach $items as $item}
             <tr>
                 <td>{$item->getDescription()}</td>
-                <td style="text-align: right;">{$item->countUntaxedUnitValue()|round}</td>
-                <td style="text-align: right;">{$item->getUnits()|round}</td>
-                <td style="text-align: right;">{$item->getTax()->inUpperDecimal() * 100 - 100|round}</td>
-                <td style="text-align: right;">{$item->countTaxValue()|round}</td>
-                <td style="text-align: right;">{$item->countFinalValue()|round}</td>
+                <td style="text-align: right; padding: 0 6px;">{$item->countUntaxedUnitValue()|round}</td>
+                <td style="text-align: right; padding: 0 6px;">{$item->getUnits()|round}</td>
+                <td style="text-align: right; padding: 0 6px;">{$item->getTax()->inUpperDecimal() * 100 - 100|round}</td>
+                <td style="text-align: right; padding: 0 6px;">{$item->countTaxValue()|round}</td>
+                <td style="text-align: right; padding: 0 6px;">{$item->countFinalValue()|round}</td>
             </tr>
             {/foreach}
         </table>
@@ -204,9 +225,8 @@
         </table>
     </div>
 
-    <div style="text-align: right; padding-right: 100px;">
-        <div style="font-weight: bold;">Vystavil, razítko, podpis:</div>
-        <img src="" alt="Razitko s podpisem" />
+    <div n:ifset="$stampImageUrl" style="text-align: right; padding-right: 100px;">
+        <img src="{$stampImageUrl}" alt="Razitko s podpisem" />
     </div>
 </div>
 </body>

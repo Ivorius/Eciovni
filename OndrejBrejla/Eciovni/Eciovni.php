@@ -46,6 +46,35 @@ class Eciovni extends Control {
         $this->templatePath = $templatePath;
     }
 
+    /**
+     * Setter for stamp image URL
+     *
+     * @param string $stampImageUrl
+     */
+    public function setStampImage($stampImageUrl)
+    {
+        $this->template->stampImageUrl = $stampImageUrl;
+    }
+
+    /**
+     * Setter for stamp image URL
+     *
+     * @param string $logoImageUrl
+     */
+    public function setLogoImage($logoImageUrl)
+    {
+        $this->template->logoImageUrl = $logoImageUrl;
+    }
+
+    /**
+     * Setter for stamp image URL
+     *
+     * @param string $supplierImageUrl
+     */
+    public function setSupplierImage($supplierImageUrl)
+    {
+        $this->template->supplierImageUrl = $supplierImageUrl;
+    }
 
     /**
      * Exports Invoice template via passed mPDF.
@@ -131,6 +160,8 @@ class Eciovni extends Control {
         $template->title = $this->data->getTitle();
         $template->id = $this->data->getId();
         $template->items = $this->data->getItems();
+        $template->orderNumber = $this->data->getOrderNumber();
+        $template->paymentChannel = $this->data->getPaymentChannel();
         $this->generateSupplier($template);
         $this->generateCustomer($template);
         $this->generateDates($template);
@@ -151,6 +182,7 @@ class Eciovni extends Control {
         $template->supplierHouseNumber = $supplier->getHouseNumber();
         $template->supplierCity = $supplier->getCity();
         $template->supplierZip = $supplier->getZip();
+        $template->supplierCountry = $supplier->getCountry();
         $template->supplierIn = $supplier->getIn();
         $template->supplierTin = $supplier->getTin();
         $template->supplierAccountNumber = $supplier->getAccountNumber();
@@ -169,6 +201,7 @@ class Eciovni extends Control {
         $template->customerHouseNumber = $customer->getHouseNumber();
         $template->customerCity = $customer->getCity();
         $template->customerZip = $customer->getZip();
+        $template->customerCountry = $customer->getCountry();
         $template->customerIn = $customer->getIn();
         $template->customerTin = $customer->getTin();
         $template->customerAccountNumber = $customer->getAccountNumber();
@@ -247,6 +280,15 @@ class Eciovni extends Control {
             $sum += $item->countFinalValue();
         }
         return $sum;
+    }
+
+    /**
+     * Use Eciovni outside of Presenter
+     */
+    protected function createTemplate()
+    {
+        $template =  new \Nette\Bridges\ApplicationLatte\Template(new \Latte\Engine);
+        return $template;
     }
 
 }

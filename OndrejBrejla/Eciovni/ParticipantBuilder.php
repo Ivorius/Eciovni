@@ -29,6 +29,9 @@ class ParticipantBuilder extends Object {
     private $zip;
 
     /** @var string */
+    private $country;
+
+    /** @var string */
     private $in = NULL;
 
     /** @var string */
@@ -46,12 +49,13 @@ class ParticipantBuilder extends Object {
      * @param string $city
      * @param string $zip
      */
-    public function __construct($name, $street, $houseNumber, $city, $zip) {
+    public function __construct($name, $street, $houseNumber, $city, $zip, $country) {
         $this->name = $name;
         $this->street = $street;
         $this->houseNumber = $houseNumber;
         $this->city = $city;
         $this->zip = $zip;
+        $this->country = $country;
     }
 
     /**
@@ -130,6 +134,15 @@ class ParticipantBuilder extends Object {
      */
     public function getZip() {
         return $this->zip;
+    }
+
+    /**
+     * Returns the country of participant.
+     *
+     * @return string
+     */
+    public function getCountry() {
+        return $this->country;
     }
 
     /**
